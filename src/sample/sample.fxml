@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <children>
+        <TextField layoutX="82.0" layoutY="28.0" fx:id="x0Field" />
+        <TextField fx:id="y0Field" layoutX="82.0" layoutY="77.0" />
+        <TextField fx:id="XField" layoutX="82.0" layoutY="128.0" />
+        <TextField fx:id="NField" layoutX="82.0" layoutY="181.0" />
+        <TextField fx:id="N1Field" layoutX="82.0" layoutY="234.0" />
+        <TextField fx:id="N2Field" layoutX="82.0" layoutY="285.0" />
+        <Label layoutX="40.0" layoutY="28.0" prefHeight="31.0" prefWidth="42.0" text="x0:" />
+        <Label layoutX="40.0" layoutY="77.0" prefHeight="31.0" prefWidth="42.0" text="y0:" />
+        <Label layoutX="40.0" layoutY="128.0" prefHeight="31.0" prefWidth="42.0" text="X:" />
+        <Label layoutX="40.0" layoutY="186.0" prefHeight="31.0" prefWidth="42.0" text="N:" />
+        <Label layoutX="40.0" layoutY="234.0" prefHeight="31.0" prefWidth="42.0" text="N1:" />
+        <Label layoutX="40.0" layoutY="285.0" prefHeight="31.0" prefWidth="42.0" text="N2:" />
+        <Button fx:id="plotButton" layoutX="136.0" layoutY="332.0" mnemonicParsing="false" onAction="#plot" prefHeight="31.0" prefWidth="79.0" text="Plot" />
+    </children>
+</AnchorPane>
