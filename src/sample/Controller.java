@@ -23,7 +23,7 @@ public class Controller {
     static double h;
 
     //exact solution of certain differential equation
-    static Function exactSolution = new Function("y(x)=ln(x/2)*ln(x)/ln(2)");
+    static Function exactSolution = new Function("y(x)=x*(3*x-1)");
 
     //fxml elements which are drawn on the main window
     @FXML TextField x0Field, y0Field, XField, NField, N1Field, N2Field;
@@ -48,7 +48,7 @@ public class Controller {
 
     //function for calculating dy/dx of certain differential equation
     static double derivativeAtPoint(double xCoor, double yCoor){
-        return 1.0 / xCoor + 2.0 * yCoor / (xCoor * Math.log(xCoor));
+        return 1.0 + 2.0 * yCoor / xCoor;
     }
 
     //function for naming axes of previously defined charts
