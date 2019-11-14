@@ -10,21 +10,13 @@ class Euler extends Controller {
         //calculating step length, defining initial maximum global error, and initial y-value of approximation at previous step
         double stepLength = (X - x0) / numberOfSteps;
         double maxGlobalError = 0.0;
-        double prevY = 0.0;
+        double y = y0, x = x0;
 
-        //jumping through number of steps
-        for (int i = 1; i <= numberOfSteps; ++i){
-
-            //calculating x, previous step x, and current y-approximation
-            double x = x0 + stepLength * i;
-            double prevX = x - stepLength;
-            double y = prevY + stepLength * derivativeAtPoint(prevX, prevY);
-
-            //updating maximum global errors in each step
-            maxGlobalError = Math.max(maxGlobalError, Math.abs(exactSolution.calculate(x) - y));
-
-            //also updating previous y-approximation
-            prevY = y;
+        //jumping through number of steps and calculate error by the formula
+        while(x + stepLength <= X){
+            y += stepLength * derivativeAtPoint(x, y);
+            x += stepLength;
+            maxGlobalError = Math.max(Math.abs(exactSolution.calculate(x) - y), maxGlobalError);
         }
         //returning result
         return maxGlobalError;

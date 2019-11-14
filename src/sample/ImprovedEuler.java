@@ -5,7 +5,7 @@ import javafx.scene.chart.XYChart;
 class ImprovedEuler extends Controller {
 
     //helping function used in formula for improved Euler method
-    private static double k2(double x, double y, double k){
+    private static double k2(double x, double y, double k, double h){
         return derivativeAtPoint(x + h, y + h * k);
     }
 
@@ -15,23 +15,15 @@ class ImprovedEuler extends Controller {
         //calculating step length, defining initial maximum global error, and initial y-value of approximation at previous step
         double stepLength = (X - x0) / numberOfSteps;
         double maxGlobalError = 0.0;
-        double prevY = 0.0;
+        double y = y0, x = x0;
 
-        //jumping through number of steps
-        for (int i = 1; i <= numberOfSteps; ++i){
-
-            //calculating x, previous step x, and current y-approximation
-            double x = x0 + stepLength * i;
-            double prevX = x - stepLength;
-            double K1 = derivativeAtPoint(prevX, prevY);
-            double K2 = k2(prevX, prevY, K1);
-            double y = prevY + stepLength * 0.5 * (K1 + K2);
-
-            //updating maximum global errors in each step
+        //jumping through number of steps and calculate error by the formula
+        while(x + stepLength <= X){
+            double K1 = derivativeAtPoint(x, y);
+            double K2 = k2(x, y, K1, stepLength);
+            y += stepLength * 0.5 * (K1 + K2);
+            x += stepLength;
             maxGlobalError = Math.max(maxGlobalError, Math.abs(exactSolution.calculate(x) - y));
-
-            //also updating previous y-approximation
-            prevY = y;
         }
         //returning result
         return maxGlobalError;
@@ -56,7 +48,7 @@ class ImprovedEuler extends Controller {
 
             //calculating current x, and current y-approximation
             K1 = derivativeAtPoint(prevX, prevY);
-            K2 = k2(prevX, prevY, K1);
+            K2 = k2(prevX, prevY, K1, h);
             double x = x0 + h * i;
             double y = prevY + h * 0.5 * (K1 + K2);
 
@@ -69,7 +61,7 @@ class ImprovedEuler extends Controller {
 
             //using formula for local error, calculating it and putting it into local error series for Euler's improved computational method
             K1 = derivativeAtPoint(prevX, prevExactY);
-            K2 = k2(prevX, prevExactY, K1);
+            K2 = k2(prevX, prevExactY, K1, h);
             double A = 0.5 * (K1 + K2);
             improvedEulerLocalError.getData().add(new XYChart.Data<>(x, Math.abs(curExactY - prevExactY - h * A)));
         }

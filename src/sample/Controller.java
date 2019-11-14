@@ -92,6 +92,13 @@ public class Controller {
         totalErrorsChart.setTitle("Total Errors");
     }
 
+    //removing dot representation in graphs
+    private static void removeDots(){
+        approximationsAndExactSolutionChart.setCreateSymbols(false);
+        localErrorsChart.setCreateSymbols(false);
+        totalErrorsChart.setCreateSymbols(false);
+    }
+
     //function for inserting into approximations and exact solution chart the exact solution
     private static void plotExact(){
 
@@ -173,9 +180,7 @@ public class Controller {
         stage.show();
     }
 
-    //function which executes when the "plot" button is pressed
-    public void plot(ActionEvent actionEvent) {
-
+    public void plot(ActionEvent actionEvent) { //function which executes when the "plot" button is pressed
         //naming axes of charts
         namingAxes();
 
@@ -190,6 +195,9 @@ public class Controller {
 
         //naming each charts for which it corresponds to
         namingCharts();
+
+        //removing dots from the graph for graph to be more clear
+        removeDots();
 
         //inserting exact solution into the approximations and exact solution chart
         plotExact();

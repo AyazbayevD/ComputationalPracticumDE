@@ -5,10 +5,10 @@ import javafx.scene.chart.XYChart;
 class RungeKutta extends Controller {
 
     //helping functions used in formula for Runge-Kutta method
-    private static double k23 (double x, double y, double k){
+    private static double k23 (double x, double y, double k, double h){
         return derivativeAtPoint(x + h * 0.5, y + h * k * 0.5);
     }
-    private static double k4 (double x, double y, double k){
+    private static double k4 (double x, double y, double k, double h){
         return derivativeAtPoint(x + h, y + h * k);
     }
 
@@ -18,25 +18,18 @@ class RungeKutta extends Controller {
         //calculating step length, defining initial maximum global error, and initial y-value of approximation at previous step
         double stepLength = (X - x0) / numberOfSteps;
         double maxGlobalError = 0.0;
-        double prevY = 0.0;
+        double y = y0, x = x0;
 
-        //jumping through number of steps
-        for (int i = 1; i <= numberOfSteps; ++i){
+        //jumping through number of steps and calculate error by the formula
+        while(x + stepLength <= X){
+            double K1 = derivativeAtPoint(x, y);
+            double K2 = k23(x, y, K1, stepLength);
+            double K3 = k23(x, y, K2, stepLength);
+            double K4 = k4(x, y, K3, stepLength);
 
-            //calculating x, previous step x, and current y-approximation
-            double x = x0 + stepLength * i;
-            double prevX = x - stepLength;
-            double K1 = derivativeAtPoint(prevX, prevY);
-            double K2 = k23(prevX, prevY, K1);
-            double K3 = k23(prevX, prevY, K2);
-            double K4 = k4(prevX, prevY, K3);
-            double y = prevY + stepLength / 6.0 * (K1 + K2 * 2.0 + K3 * 2.0 + K4);
-
-            //updating maximum global errors in each step
+            y += stepLength / 6.0 * (K1 + K2 * 2.0 + K3 * 2.0 + K4);
+            x += stepLength;
             maxGlobalError = Math.max(maxGlobalError, Math.abs(exactSolution.calculate(x) - y));
-
-            //also updating previous y-approximation
-            prevY = y;
         }
         //returning result
         return maxGlobalError;
@@ -61,9 +54,9 @@ class RungeKutta extends Controller {
 
             //calculating current x, and current y-approximation
             K1 = derivativeAtPoint(prevX, prevY);
-            K2 = k23(prevX, prevY, K1);
-            K3 = k23(prevX, prevY, K2);
-            K4 = k4(prevX, prevY, K3);
+            K2 = k23(prevX, prevY, K1, h);
+            K3 = k23(prevX, prevY, K2, h);
+            K4 = k4(prevX, prevY, K3, h);
             double x = x0 + h * i;
             double y = prevY + h / 6.0 * (K1 + K2 * 2.0 + K3 * 2.0 + K4);
 
@@ -76,9 +69,9 @@ class RungeKutta extends Controller {
 
             //using formula for local error, calculating it and putting it into local error series for Runge-Kutta computational method
             K1 = derivativeAtPoint(prevX, prevExactY);
-            K2 = k23(prevX, prevExactY, K1);
-            K3 = k23(prevX, prevExactY, K2);
-            K4 = k4(prevX, prevExactY, K3);
+            K2 = k23(prevX, prevExactY, K1, h);
+            K3 = k23(prevX, prevExactY, K2, h);
+            K4 = k4(prevX, prevExactY, K3, h);
             double A = (K1 + K2 * 2.0 + K3 * 2.0 + K4) / 6.0;
             rungeKuttaLocalError.getData().add(new XYChart.Data<>(x, Math.abs(curExactY - prevExactY - h * A)));
         }
